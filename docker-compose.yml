@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  jupyter-notebook:
+    build: ./notebook_docker
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./data:/app/data
+    command: jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/app/notebooks
+
+  flask-backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - ./data/models:/app/models
+    environment:
+      - FLASK_ENV=development
+    command: flask run --host=0.0.0.0
+
+  react-frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend/src:/usr/share/nginx/html
+    command: ["nginx", "-g", "daemon off;"]
+
+volumes:
+  notebooks-data:
