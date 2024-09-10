@@ -1,0 +1,31 @@
+.report-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+}
+
+.report-card:hover{
+  transform: scale(1.05);
+}
+
+.report-content {
+  flex: 1;
+  padding-right: 20px; /* Space between text and image */
+}
+
+.report-content p {
+  font-size: 16px; /* Adjust the font size */
+  margin: 10px 0;   /* Adjust the spacing (top and bottom) */
+  line-height: 1.5; /* Adjust the line spacing */
+}
+
+.report-image {
+  width: 150px; /* Fixed width */
+  height: 150px; /* Fixed height */
+  object-fit: cover; /* Ensures the image maintains its aspect ratio */
+}

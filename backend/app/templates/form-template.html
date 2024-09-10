@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Form</title>
+</head>
+<body>
+    <h2>Submit Report Form</h2>
+
+    <!-- Form to submit data via POST method -->
+    <form id="dataForm" action="/api/submit" method="POST" enctype="multipart/form-data>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <!-- Changed email field to a description text area -->
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="url">Detailed Report URL:</label><br>
+        <input type="text" id="url" name="url" value="www.google.com" required><br><br>
+
+        <label for="image">Upload Snapshot:</label><br>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Div to display the output from the server -->
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <!-- Optional: JavaScript to handle form submission -->
+    <script>
+        document.getElementById('dataForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent form from refreshing the page
+
+            // Prepare form data for sending
+            const formData = new FormData(document.getElementById('dataForm'));
+
+            // Fetch API to send data as POST request
+            fetch('/api/submit', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  // Display the result from the server in the result div
+                  document.getElementById('result').innerHTML = `
+                      <h3>Server Response:</h3>
+                      <p><strong>Title:</strong> ${data.title}</p>
+                      <p><strong>URL:</strong> ${data.url}</p>
+                      <p><strong>Description:</strong> ${data.description}</p>
+                      <p><strong>Image Id:</strong> ${data.image_id}</p>
+                      <img src="/api/image/${data.image_id}" alt="Uploaded Image" width="300">
+                      <p><strong>Message:</strong> ${data.message}</p>
+                  `;
+              })
+              .catch(error => {
+                  document.getElementById('result').innerHTML = `
+                      <h3>Error:</h3>
+                      <p>${error}</p>
+                  `;
+              });
+        };
+    </script>
+</body>
+</html>
